@@ -1,6 +1,6 @@
 import { galleryItems } from './gallery-items.js';
-import * as basicLightbox from 'basiclightbox';
 
+const basicLightBox = new BasicLightBox();
 // Change code below this line
 const gallery = document.querySelector('.gallery');
 
@@ -40,7 +40,7 @@ const onGalleryClick = e => {
 
   const source = elem.dataset.source;
 
-  basicLightbox.create(`<img src=${source}>`).show();
+  basicLightBox.create(`<img src=${source}>`).show();
 };
 
 gallery.addEventListener('click', onGalleryClick);
