@@ -1,46 +1,37 @@
 import { galleryItems } from './gallery-items.js';
-
-const basicLightBox = new BasicLightBox();
 // Change code below this line
-const gallery = document.querySelector('.gallery');
 
-const makeGalleryItem = item => {
-  const galleryItem = document.createElement('div');
-  galleryItem.classList.add('gallery__item');
+const galleryRef = document.querySelector('.gallery');
 
-  const galleryLink = document.createElement('a');
-  galleryLink.classList.add('gallery__link');
-  galleryLink.href = item.original;
+const galleryMarkup = galleryItems
+  .map(({ preview, original, description }) => {
+    return `<div class="gallery__item">
+      <a class="gallery__link" href="${original}">
+        <img
+          class="gallery__image"
+          src="${preview}"
+          data-source="${original}"
+          alt="${description}"
+        />
+      </a>
+    </div>`;
+  })
+  .join('');
 
-  const galleryImage = document.createElement('img');
-  galleryImage.classList.add('gallery__image');
-  galleryImage.src = item.preview;
-  galleryImage.dataset.source = item.original;
-  galleryImage.alt = item.description;
+galleryRef.insertAdjacentHTML('beforeend', galleryMarkup);
 
-  galleryLink.appendChild(galleryImage);
-  galleryItem.appendChild(galleryLink);
-
-  return galleryItem;
-};
-
-const galleryMarkup = document.createDocumentFragment();
-
-galleryItems.map(item => galleryMarkup.appendChild(makeGalleryItem(item)));
-
-gallery.appendChild(galleryMarkup);
-
-const onGalleryClick = e => {
+galleryRef.addEventListener('click', e => {
   e.preventDefault();
-  const elem = e.target;
-
-  if (!elem.classList.contains('gallery__image')) {
+  if (e.target.nodeName !== 'IMG') {
     return;
   }
 
-  const source = elem.dataset.source;
+  instance.element().querySelector('img').src = e.target.dataset.source;
 
-  basicLightBox.create(`<img src=${source}>`).show();
-};
+  instance.show();
+});
 
-gallery.addEventListener('click', onGalleryClick);
+const instance = basicLightbox.create(`<img src="" />`, {
+  onShow: instance => ('onShow', instance),
+  onClose: instance => ('onClose', instance),
+});
