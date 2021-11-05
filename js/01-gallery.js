@@ -31,6 +31,12 @@ galleryRef.addEventListener('click', e => {
   instance.show();
 });
 
+window.addEventListener('keydown', e => {
+  if (e.code === 'Escape') {
+    instance.close();
+  }
+});
+
 const instance = basicLightbox.create(`<img src="" />`, {
   onShow: instance => ('onShow', instance),
   onClose: instance => ('onClose', instance),
